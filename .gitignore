@@ -1,0 +1,4 @@
+*.pyc
+clickclick.egg-info
+db.sqlite3
+/media/

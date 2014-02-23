@@ -1,0 +1,35 @@
+{% extends "clickclick/__base.html" %}
+{% load daguerre humanize %}
+
+{% block title %}Your Photosets | {{ block.super }}{% endblock %}
+
+{% block content %}
+	<header class="page-header">
+		<h1 class="page-title">Your Photosets</h1>
+		<section class="page-header-actions">
+			<a href="{% url 'clickclick.create_photoset' %}" class="btn"><i class="icon-plus"></i> New Photoset</a>
+		</section>
+	</header>
+	<section class="photoset-list">
+		<ul class="thumbnails">
+		{% for photoset in photosets %}
+			<li class="span3">
+				<a href="{{ photoset.get_absolute_url }}" class="thumbnail">
+					{% adjust photoset.photos.all.0.image "fit" height=260 as im %}
+					<img src="{{ im.url }}" />
+					<div class="caption">
+						<h5>
+							{{ photoset.title }}
+							<small>{{ photoset.last_updated_time|naturaltime }}</small>
+						</h5>
+					</div>
+				</a>
+			</li>
+		{% empty %}
+			<li>
+				You don&#8217;t have any photo sets yet!
+			</li>
+		{% endfor %}
+		</ul>
+	</section>
+{% endblock %}

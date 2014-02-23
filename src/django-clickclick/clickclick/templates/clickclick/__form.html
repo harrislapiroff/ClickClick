@@ -1,0 +1,25 @@
+{% extends "clickclick/__base.html" %}
+
+{% block content %}
+	{% block form_header %}
+		{% if form_title %}
+			<header class="page-header">
+				<h1>{{ form_title }}</h1>
+			</header>
+		{% endif %}
+	{% endblock %}
+	<form enctype="multipart/form-data" method="post" action="." class="form-horizontal">
+		{% csrf_token %}
+		{{ form.non_field_errors }}
+		{% for field in form %}
+			{% include "clickclick/_form_field.html" %}
+		{% endfor %}
+		{% block extra_fields %}
+		{% endblock %}
+		<div class="form-actions">
+			{% block actions %}
+				<button class="btn btn-primary">Submit</button>
+			{% endblock %}
+		</div>
+	</form>
+{% endblock %}

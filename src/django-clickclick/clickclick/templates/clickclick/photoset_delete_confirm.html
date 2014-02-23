@@ -1,0 +1,12 @@
+{% extends "clickclick/__base.html" %}
+
+{% block content %}
+	<form method="post" action=".">
+		{% csrf_token %}
+		<p>Are you sure you want to delete &ldquo;{{ photoset.title }}&rdquo;?</p>
+		<div class="form-actions">
+			<button class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</button>
+			<a class="btn" href="{{ photoset.get_absolute_url}}"><i class="icon-ban-circle"></i> Cancel</a>
+		</div>
+	</form>
+{% endblock %}

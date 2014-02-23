@@ -1,0 +1,60 @@
+{% load clickclick_tags %}
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>{% block title %}Click Click{% endblock %}</title>
+		{% block styles %}
+			<link rel="stylesheet" href="{{ STATIC_URL }}clickclick/bootstrap/css/bootstrap.css" type="text/css" media="screen" charset="utf-8">
+			<link rel="stylesheet" href="{{ STATIC_URL }}clickclick/bootstrap/css/bootstrap-responsive.css" type="text/css" media="screen" charset="utf-8">
+			<link rel="stylesheet" href="{{ STATIC_URL }}clickclick/screen.css" type="text/css" media="screen" charset="utf-8" />
+		{% endblock %}
+		{% block javascript %}
+			<script src="{{ STATIC_URL }}clickclick/jquery.1.7.1.js" type="text/javascript" charset="utf-8"></script>
+			<script src="{{ STATIC_URL }}clickclick/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+			<script src="{{ STATIC_URL }}clickclick/base.js" type="text/javascript" charset="utf-8"></script>
+		{% endblock %}
+	</head>
+	<body>
+		<div id="container">
+			<div class="navbar navbar-fixed-top">
+				<div class="navbar-inner">
+					<div class="container">
+						<a href="{% url 'clickclick.home' %}" class="brand">{% clickclick_title %}</a>
+						<ul class="nav">
+							{% if user.is_authenticated %}
+								<li>
+									<a href="{% url 'clickclick.photoset_list' %}">
+										<i class="icon-user icon-white"></i>
+										{% if user.first_name %}
+											{{ user.first_name }} {{ user.last_name }}
+										{% else %}
+											{{ user.username }}
+										{% endif %}
+									</a>
+								</li>
+							{% else %}
+								<li>
+									<a href="{% url 'clickclick.login' %}">Sign In</a>
+								</li>
+							{% endif %}
+						</ul>{# /.nav #}
+					</div>{# /.container #}
+				</div>{# /.navbar-inner #}
+			</div>{# /.navbar #}
+			<div id="bd" role="main">
+				<div class="container">
+					{% if messages %}
+						<section id="messages">
+							{% for message in messages %}
+								<div{% if message.tags %} class='alert{% for tag in message.tags %} alert-{{ tag|lower }}{% endfor %}'{% endif %}>{{ message }}</div>
+							{% endfor %}
+						</section>
+					{% endif %}
+					{% block content %}
+					{% endblock %}
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

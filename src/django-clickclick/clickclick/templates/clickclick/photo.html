@@ -1,0 +1,36 @@
+{% extends "clickclick/__base.html" %}
+{% load daguerre %}
+
+{% block title %}{{ photo.title }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+	{% with photo.photoset as photoset %}
+		<header class="page-header">
+			{% if photo.title %}
+				<h1 class="page-title">{{ photo.title }}</h1>
+			{% endif %}
+			{% if photo.owner == user %}
+				<section class="page-header-actions">
+					<a class="btn" href="{% url 'clickclick.edit_photo' photoset.slug photo.slug %}"><i class="icon-pencil"></i> Edit Photo</a>
+					<a class="btn btn-danger" href="{% url 'clickclick.delete_photo' photoset.slug photo.slug %}"><i class="icon-trash icon-white"></i> Delete Photo</a>
+				</section>
+			{% endif %}
+		</header>
+		<div class="row">
+			<section class="span8">
+				{% adjust photo.image "fit" width=880 height=770 as im %}
+				<div class="photo-stage">
+					<img src="{{ im }}" />
+				</div>
+				{% if photo.caption %}
+					<div class="photo-caption">
+						{{ photo.caption }}
+					</div>
+				{% endif %}
+			</section>{# /.photo-stage.span8 #}
+			<aside class="photo-meta span4">
+				<p>From the set <span class="photoset-name"><a href="{% url 'clickclick.photoset' photoset.slug %}">{{ photoset.title }}</a></span></p>
+			</aside>{# /.photo-meta.span4 #}
+		</div>{# /.row #}
+	{% endwith %}
+{% endblock %}
