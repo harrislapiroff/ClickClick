@@ -15,7 +15,7 @@
 			{% endif %}
 		</header>
 		<div class="row">
-			<section class="span8">
+			<section class="col-md-8">
 				{% adjust photo.image "fit" width=880 height=770 as im %}
 				<div class="photo-stage">
 					<img src="{{ im }}" />
@@ -25,10 +25,10 @@
 						{{ photo.caption }}
 					</div>
 				{% endif %}
-			</section>{# /.photo-stage.span8 #}
-			<aside class="photo-meta span4">
+			</section>{# /.photo-stage.col-md-8 #}
+			<aside class="photo-meta col-md-4">
 				<p>From the set <span class="photoset-name"><a href="{% url 'clickclick.photoset' photoset.slug %}">{{ photoset.title }}</a></span></p>
-			</aside>{# /.photo-meta.span4 #}
+			</aside>{# /.photo-meta.col-md-4 #}
 		</div>{# /.row #}
 	{% endwith %}
 {% endblock %}

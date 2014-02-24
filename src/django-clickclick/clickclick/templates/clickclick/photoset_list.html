@@ -14,8 +14,8 @@
 		<ul class="media-grid">
 		{% for photoset in photosets %}
 			{% adjust photoset.photos.all.0.image "fit" height=260 as im %}
-			<li style="width: {{ im.width }}px;">
-				<a href="{{ photoset.get_absolute_url }}" class="thumbnail">
+			<li>
+				<a style="width: {{ im.width }}px; box-sizing: content-box;" href="{{ photoset.get_absolute_url }}" class="thumbnail">
 					<img src="{{ im.url }}" />
 					<div class="caption">
 						<h5>
