@@ -7,15 +7,15 @@
 	<header class="page-header">
 		<h1 class="page-title">Your Photosets</h1>
 		<section class="page-header-actions">
-			<a href="{% url 'clickclick.create_photoset' %}" class="btn"><i class="icon-plus"></i> New Photoset</a>
+			<a href="{% url 'clickclick.create_photoset' %}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> New Photoset</a>
 		</section>
 	</header>
 	<section class="photoset-list">
-		<ul class="thumbnails">
+		<ul class="media-grid">
 		{% for photoset in photosets %}
-			<li class="span3">
+			{% adjust photoset.photos.all.0.image "fit" height=260 as im %}
+			<li style="width: {{ im.width }}px;">
 				<a href="{{ photoset.get_absolute_url }}" class="thumbnail">
-					{% adjust photoset.photos.all.0.image "fit" height=260 as im %}
 					<img src="{{ im.url }}" />
 					<div class="caption">
 						<h5>

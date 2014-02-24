@@ -6,13 +6,11 @@
 {% block content %}
 	{% with photo.photoset as photoset %}
 		<header class="page-header">
-			{% if photo.title %}
-				<h1 class="page-title">{{ photo.title }}</h1>
-			{% endif %}
+			<h1 class="page-title">{% if photo.title %}{{ photo.title }}{% else %}&nbsp;{% endif %}</h1>
 			{% if photo.owner == user %}
 				<section class="page-header-actions">
-					<a class="btn" href="{% url 'clickclick.edit_photo' photoset.slug photo.slug %}"><i class="icon-pencil"></i> Edit Photo</a>
-					<a class="btn btn-danger" href="{% url 'clickclick.delete_photo' photoset.slug photo.slug %}"><i class="icon-trash icon-white"></i> Delete Photo</a>
+					<a class="btn" href="{% url 'clickclick.edit_photo' photoset.slug photo.slug %}"><i class="glyphicon glyphicon-pencil"></i> Edit Photo</a>
+					<a class="btn btn-danger" href="{% url 'clickclick.delete_photo' photoset.slug photo.slug %}"><i class="glyphicon glyphicon-trash"></i> Delete Photo</a>
 				</section>
 			{% endif %}
 		</header>

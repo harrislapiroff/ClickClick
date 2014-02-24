@@ -8,9 +8,9 @@
 		<h1 class="page-title">{{ photoset.title }}</h1>
 		{% if photoset.owner == user %}
 			<section class="page-header-actions">
-				<a class="btn" href="{% url 'clickclick.add_photo' photoset.slug %}"><i class="icon-plus"></i> Add Photo</a>
-				<a class="btn" href="{% url 'clickclick.edit_photoset' photoset.slug %}"><i class="icon-pencil"></i> Edit Photoset</a>
-				<a class="btn btn-danger" href="{% url 'clickclick.delete_photoset' photoset.slug %}" class="delete"><i class="icon-trash icon-white"></i> Delete Photoset</a>
+				<a class="btn btn-primary" href="{% url 'clickclick.add_photo' photoset.slug %}"><i class="glyphicon glyphicon-plus"></i> Add Photo</a>
+				<a class="btn btn-default" href="{% url 'clickclick.edit_photoset' photoset.slug %}"><i class="glyphicon glyphicon-pencil"></i> Edit Photoset</a>
+				<a class="btn btn-danger" href="{% url 'clickclick.delete_photoset' photoset.slug %}" class="delete"><i class="glyphicon glyphicon-trash"></i> Delete Photoset</a>
 			</section>
 		{% endif %}
 	</header>
@@ -20,21 +20,16 @@
 		{% endif %}
 	</section>
 	<section class="photoset-photos">
-		{% for photo in photoset.photos.all %}
-			{% if forloop.first %}
-				<ul class="thumbnails photo-list">
-			{% endif %}
-			{% adjust photo.image "fit" height=144 as im %}
-			<li>
-				<a class="thumbnail" href="{% url 'clickclick.photo' photoset.slug photo.slug %}"{% if photo.title %} title="{{ photo.title }}"{% endif %}>
-					<img src="{{ im }}" alt="{% if photo.title %}{{ photo.title }}{% else %}Untitled Photo{% endif %}"/>
-				</a>
-			</li>
-			{% if forloop.last %}
-				</ul>
-			{% endif %}
-		{% empty %}
-			<p>This photoset is empty.</p>
-		{% endfor %}
+		<ul class="media-grid">
+			{% for photo in photoset.photos.all %}
+				<li>
+					<a class="thumbnail" href="{% url 'clickclick.photo' photoset.slug photo.slug %}"{% if photo.title %} title="{{ photo.title }}"{% endif %}>
+						<img src="{% adjust photo.image "fit" height=260 %}" alt="{% if photo.title %}{{ photo.title }}{% else %}Untitled Photo{% endif %}"/>
+					</a>
+				</li>
+			{% empty %}
+				<li>This photoset is empty.</li>
+			{% endfor %}
+		</ul>
 	</section>
 {% endblock %}
