@@ -1,10 +1,9 @@
 from django.conf.urls import patterns, include, url
-from django.views.generic import RedirectView
 
 from clickclick.utils import reverse_lazy
 
 urlpatterns = patterns('',
-	url(r'^$', RedirectView.as_view(url=reverse_lazy('clickclick.photoset_list')), name="clickclick.home"),
+	url(r'^$', 'clickclick.views.home', name="clickclick.home"),
 	# photo/set creation and updating
 	url(r'^create/$', 'clickclick.views.create_photoset', name='clickclick.create_photoset'),
 	url(r'^delete/(?P<photoset_slug>[\w-]+)/$', 'clickclick.views.delete_photoset', name='clickclick.delete_photoset'),
