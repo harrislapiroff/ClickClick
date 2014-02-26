@@ -1,6 +1,7 @@
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, render, redirect
+from django.http import HttpResponseForbidden, HttpResponseNotAllowed
 from django.core.urlresolvers import reverse
+from django.utils.text import slugify
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
@@ -96,6 +97,24 @@ class PhotoDeleteView(DeleteView, PhotoPermissionMixin):
 	def success_url(self):
 		return reverse('clickclick.views.photoset_detail', args=(self.kwargs['photoset_slug'],))
 
+
+def upload_photos(request, photoset_slug):
+	if request.POST:
+		photoset = get_object_or_404(PhotoSet, slug=photoset_slug)
+
+		if photoset.owner != request.user:
+			# If the user does not own this photoset, short-circuit.
+			return HttpResponseForbidden("You do not have permission to upload files to &ldquo;%s&rdquo;" % photoset.title)
+		
+		# Otherwise, iterate over the file list, creating Image objects.
+		file_list = request.FILES.getlist('images')
+		for _file in file_list:
+			# TODO: convert this for loop to a bulk create
+			# TODO: better slug generation--this leaves the potential for unresolved uniqueness conflicts, since photoset and slug must be unique
+			Photo.objects.create(title=_file.name, slug=slugify(_file.name), image=_file, owner=request.user, photoset=photoset)
+		return redirect(photoset)
+	# Only POST is allowed.
+	return HttpResponseNotAllowed(("POST",))
 
 create_photoset = login_required(PhotoSetCreateView.as_view())
 edit_photoset = login_required(PhotoSetUpdateView.as_view())

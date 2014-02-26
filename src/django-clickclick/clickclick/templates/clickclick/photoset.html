@@ -31,7 +31,16 @@
 				<li>This photoset is empty.</li>
 			{% endfor %}
 			{% if photo_form %}
-				<li>{{ photo_form.as_p }}</li>
+				<li>
+					<form action="{% url "clickclick.upload_photos" photoset.slug %}" method="POST" 
+enctype="multipart/form-data">
+						{% csrf_token %}
+						{% for field in photo_form %}
+							{{ field }}
+						{% endfor %}
+						<button class="btn btn-primary">Upload photos</button>
+					</form>
+				</li>
 			{% endif %}
 		</ul>
 	</section>

@@ -4,7 +4,7 @@ from django.views.generic import DetailView, ListView
 from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext
 
-from clickclick.forms import FastPhotoCreateForm
+from clickclick.forms import PhotoUploadForm
 from clickclick.models import PhotoSet, Photo
 from clickclick.views.base import SinglePhotoMixin, SinglePhotoSetMixin
 
@@ -12,8 +12,10 @@ from clickclick.views.base import SinglePhotoMixin, SinglePhotoSetMixin
 def photoset_detail(request, photoset_slug):
 	photoset = get_object_or_404(PhotoSet, slug=photoset_slug)
 	kwargs = {'photoset': photoset}
+
 	if request.user == photoset.owner:
-		kwargs['photo_form'] = FastPhotoCreateForm()
+		kwargs['photo_form'] = PhotoUploadForm(initial={'photoset': photoset.pk})
+	
 	return render(request, 'clickclick/photoset.html', kwargs)
 
 
