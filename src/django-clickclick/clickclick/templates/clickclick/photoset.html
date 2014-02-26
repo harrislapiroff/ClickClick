@@ -30,6 +30,9 @@
 			{% empty %}
 				<li>This photoset is empty.</li>
 			{% endfor %}
+			{% if photo_form %}
+				<li>{{ photo_form.as_p }}</li>
+			{% endif %}
 		</ul>
 	</section>
 {% endblock %}

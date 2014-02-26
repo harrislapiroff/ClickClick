@@ -36,3 +36,8 @@ class UserUpdateForm(UserChangeForm):
 	class Meta:
 		fields = ('first_name', 'last_name', 'username', 'email')
 		model = User
+
+class FastPhotoCreateForm(forms.ModelForm):
+	class Meta:
+		model = Photo
+		fields = ('image',)
