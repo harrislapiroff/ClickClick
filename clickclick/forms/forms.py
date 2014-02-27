@@ -13,7 +13,7 @@ class PhotoSetForm(forms.ModelForm):
 	
 	def __init__(self, *args, **kwargs):
 		super(PhotoSetForm, self).__init__(*args, **kwargs)
-		url = "http://%s%s" % ("localhost", reverse('clickclick.photoset', args=('--INPUT_HERE--',)))
+		url = "http://%s%s" % ("localhost", reverse('clickclick.photoset', args=(self.instance.owner.username, '--INPUT_HERE--',)))
 		self.fields['slug'].widget.attrs.update({'data-slug-url': url})
 	
 	class Meta:
@@ -26,7 +26,7 @@ class PhotoCreateForm(forms.ModelForm):
 	
 	def __init__(self, *args, **kwargs):
 		super(PhotoCreateForm, self).__init__(*args, **kwargs)
-		url = "http://%s%s" % ("localhost", reverse('clickclick.photo', args=(self.instance.photoset.slug, '--INPUT_HERE--',)))
+		url = "http://%s%s" % ("localhost", reverse('clickclick.photo', args=(self.instance.photoset.owner.username, self.instance.photoset.slug, '--INPUT_HERE--',)))
 		self.fields['slug'].widget.attrs.update({'data-slug-url': url})
 		
 	class Meta:

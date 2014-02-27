@@ -6,17 +6,20 @@ from django.contrib.auth.models import User
 class PhotoSet(models.Model):
 	"""A photoset with photos in it."""
 	title = models.CharField(max_length=100)
-	slug = models.CharField(max_length=50, unique=True)
+	slug = models.CharField(max_length=50)
 	description = models.TextField(blank=True)
 	owner = models.ForeignKey(User, null=True, related_name='photosets')
 	creation_time = models.DateTimeField(auto_now_add=True)
 	last_updated_time = models.DateTimeField(auto_now=True)
 	
 	def get_absolute_url(self):
-		return reverse('clickclick.photoset', args=[self.slug])
+		return reverse('clickclick.photoset', args=[self.owner.username, self.slug])
 	
 	def __unicode__(self):
 		return self.title
+
+	class Meta:
+		unique_together = ('owner', 'slug',)
 
 
 class Photo(models.Model):
@@ -32,7 +35,7 @@ class Photo(models.Model):
 	last_updated_time = models.DateTimeField(auto_now=True)
 	
 	def get_absolute_url(self):
-		return reverse('clickclick.photo', args=[self.photoset.slug, self.slug])
+		return reverse('clickclick.photo', args=[self.photoset.owner.username, self.photoset.slug, self.slug])
 	
 	def __unicode__(self):
 		return self.title if self.title else self.slug

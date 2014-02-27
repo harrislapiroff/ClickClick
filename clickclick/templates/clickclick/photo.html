@@ -27,7 +27,7 @@
 				{% endif %}
 			</section>{# /.photo-stage.col-md-8 #}
 			<aside class="photo-meta col-md-4">
-				<p>From the set <span class="photoset-name"><a href="{% url 'clickclick.photoset' photoset.slug %}">{{ photoset.title }}</a></span></p>
+				<p>From the set <span class="photoset-name"><a href="{{ photoset.get_absolute_url }}">{{ photoset.title }}</a></span></p>
 			</aside>{# /.photo-meta.col-md-4 #}
 		</div>{# /.row #}
 	{% endwith %}

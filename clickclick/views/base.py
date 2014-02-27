@@ -18,19 +18,20 @@ class SinglePhotoMixin(SingleObjectMixin):
 		"""
 		Returns the object the view is displaying.
 		
-		Requires both a `photo_slug` and a `photoset_slug` argument in the URLconf.
+		Requires `username`, `photo_slug`, and `photoset_slug` argument in the URLconf.
 		"""
 		# Use a custom queryset if provided.
 		if queryset is None:
 			queryset = self.get_queryset()
 		# Extract slugs.
+		username = self.kwargs.get('username')
 		photoset_slug = self.kwargs.get('photoset_slug')
 		photo_slug = self.kwargs.get('photo_slug')
-		# If both of these are not defined, it is an error.
-		if not (photoset_slug and photo_slug):
-			raise AttributeError(u"View %s must be called with either a photoset_slug and a photo_slug." % self.__class__.__name__)
+		# If one of these is missing, it is an error.
+		if not (username and photoset_slug and photo_slug):
+			raise AttributeError(u"View %s must be called with a username, photoset_slug, and photo_slug." % self.__class__.__name__)
 		try:
-			obj = queryset.get(slug__exact=self.kwargs['photo_slug'], photoset__slug__exact=self.kwargs['photoset_slug'])
+			obj = queryset.get(photoset__owner__username__exact=self.kwargs['username'], slug__exact=self.kwargs['photo_slug'], photoset__slug__exact=self.kwargs['photoset_slug'])
 		except ObjectDoesNotExist:
 			raise Http404(u"No Photos found matching the query")
 		return obj
@@ -57,11 +58,39 @@ class SinglePhotoSetMixin(SingleObjectMixin):
 			raise Http404(u"No Photoset found matching the query")
 		return object
 
-class PhotoPermissionMixin(SinglePhotoMixin):
+class PhotoPermissionMixin(SingleObjectMixin):
 	"""
 	Checks for permissions on a photo before either dispatching the view or returning HttpReponseForbidden.
 	"""
 	
+	model = Photo
+	context_object_name = 'photo'
+
+	def get_object(self, queryset=None):
+		"""
+		Returns the object the view is working with.
+		
+		Requires `photo_slug`, and `photoset_slug` argument in the URLconf.
+		The photoset owner is assumed to be the logged-in user.
+		"""
+
+		# Use a custom queryset if provided.
+		if queryset is None:
+			queryset = self.get_queryset()
+		# Extract slugs.
+		photoset_slug = self.kwargs.get('photoset_slug')
+		photo_slug = self.kwargs.get('photo_slug')
+		username = self.request.user.username
+		# If one of these is missing, it's an error.
+		if not (photoset_slug and photo_slug):
+			raise AttributeError(u"View %s must be called with a photoset_slug, and photo_slug." % self.__class__.__name__)
+		try:
+			obj = queryset.get(photoset__owner__username__exact=username, slug__exact=photo_slug, photoset__slug__exact=photoset_slug)
+		except ObjectDoesNotExist:
+			raise Http404(u"No Photos found matching the query")
+		return obj
+
+
 	def dispatch(self, request, photoset_slug=None, photo_slug=None, *args, **kwargs):
 		"Check if the current user has permission to edit this photoset. If not, return forbidden."
 		# if no photoset is specified, return forbidden
@@ -77,10 +106,28 @@ class PhotoPermissionMixin(SinglePhotoMixin):
 		return super(PhotoPermissionMixin, self).dispatch(request, photoset_slug=photoset_slug, photo_slug=photo_slug, *args, **kwargs)
 	
 
-class PhotoSetPermissionMixin(SinglePhotoSetMixin):
+class PhotoSetPermissionMixin(SingleObjectMixin):
 	"""
 	Checks for permissions on a photoset before either dispatching the view or returning HttpResponseForbidden.
 	"""
+	
+	model = PhotoSet
+	context_object_name = 'photoset'
+	
+	def get_object(self, queryset=None):
+		"""
+		Returns the object the view is displaying.
+		
+		Requires a `photoset_slug` argument in the URLconf.
+		Owner is assumed to be the logged-in user.
+		"""
+		if queryset is None:
+			queryset = self.get_queryset()
+		try:
+			object = queryset.get(owner=self.request.user, slug=self.kwargs['photoset_slug'])
+		except ObjectDoesNotExist:
+			raise Http404(u"No Photoset found matching the query")
+		return object
 	
 	def dispatch(self, request, photoset_slug=None, *args, **kwargs):
 		"""
