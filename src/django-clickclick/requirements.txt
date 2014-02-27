@@ -1,6 +1,0 @@
-django==1.4
-PIL==1.1.7
-sorl-thumbnail==11.09
-markdown==2.0.3
-typogrify==1.0
-south==0.7.3
