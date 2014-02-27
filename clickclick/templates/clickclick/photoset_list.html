@@ -28,8 +28,14 @@
 					<img src="{{ im.url }}" />
 					<div class="caption">
 						<h5>
-							{{ photoset.title }}
-							<small>{{ photoset.last_updated_time|naturaltime }}</small>
+							{{ photoset.title }}<br />
+							<small>
+								{{ photoset.last_updated_time|naturaltime }}
+								{% if owner == user%}
+									&bull;
+									{% include "clickclick/_privacy_indicator.html" with photoset=photoset only %}
+								{% endif %}
+							</small>
 						</h5>
 					</div>
 				</a>

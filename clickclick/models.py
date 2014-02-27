@@ -5,9 +5,20 @@ from django.contrib.auth.models import User
 
 class PhotoSet(models.Model):
 	"""A photoset with photos in it."""
+
+	PRIVATE = "PR"
+	UNLISTED = "UN"
+	PUBLIC = "PL"
+	PRIVACY_CHOICES = (
+		(PRIVATE, "Private"),
+		(UNLISTED, "Unlisted"),
+		(PUBLIC, "Public"),
+	)
+
 	title = models.CharField(max_length=100)
 	slug = models.CharField(max_length=50)
 	description = models.TextField(blank=True)
+	privacy = models.CharField(max_length=2, choices=PRIVACY_CHOICES, default=PRIVATE)
 	owner = models.ForeignKey(User, null=True, related_name='photosets')
 	creation_time = models.DateTimeField(auto_now_add=True)
 	last_updated_time = models.DateTimeField(auto_now=True)

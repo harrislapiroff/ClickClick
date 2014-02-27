@@ -11,6 +11,11 @@ from clickclick.views.base import SinglePhotoMixin, SinglePhotoSetMixin
 
 def photoset_detail(request, username, photoset_slug):
 	photoset = get_object_or_404(PhotoSet, owner__username=username, slug=photoset_slug)
+
+	# If privacy settings do not allow this photoset to be publicly browsed, short-circuit.
+	if photoset.privacy == PhotoSet.PRIVATE and request.user != photoset.owner:
+		raise Http404("PhotoSet not found.")
+
 	kwargs = {'photoset': photoset}
 
 	if request.user == photoset.owner:
@@ -19,22 +24,23 @@ def photoset_detail(request, username, photoset_slug):
 	return render(request, 'clickclick/photoset.html', kwargs)
 
 
+def photo_detail(request, username, photoset_slug, photo_slug):
+	photoset = get_object_or_404(PhotoSet, owner__username=username, slug=photoset_slug)
+	photo = get_object_or_404(Photo, photoset=photoset, slug=photo_slug)
+
+	# If privacy settings do not allow this photoset to be publicly browsed, short-circuit.
+	if photoset.privacy == PhotoSet.PRIVATE and request.user != photoset.owner:
+		raise Http404("Photo not found.")
+
+	return render(request, 'clickclick/photo.html', {'photoset': photoset, 'photo': photo})
+
+
 def user_photoset_list(request, username):
-	user = get_object_or_404(User, username=username)
-	photosets = PhotoSet.objects.filter(owner=user)
-	return render(request, 'clickclick/photoset_list.html', {'owner': user, 'photosets': photosets})
+	owner = get_object_or_404(User, username=username)
+	photosets = PhotoSet.objects.filter(owner=owner)
 
+	# If current user is not owner, restrict photosets to listed.
+	if owner != request.user:
+		photosets = photosets.filter(privacy=PhotoSet.PUBLIC)
 
-class PhotoSetView(ListView):
-	"A view for displaying a PhotoSet as a ListView subclass instead of a detail view. Not currently complete or used."
-	model = Photo
-	template_name = 'clickclick/photoset.html'
-	context_object_name = 'photos'
-	paginate_by = 50
-
-
-class PhotoDetailView(DetailView, SinglePhotoMixin):
-	"A view for displaying a single Photo."
-	template_name = 'clickclick/photo.html'
-
-photo_detail = PhotoDetailView.as_view()
+	return render(request, 'clickclick/photoset_list.html', {'owner': owner, 'photosets': photosets})

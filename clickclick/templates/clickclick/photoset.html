@@ -5,7 +5,14 @@
 
 {% block content %}
 	<header class="page-header">
-		<h1 class="page-title">{{ photoset.title }}</h1>
+		<h1 class="page-title">
+			{{ photoset.title }}
+			<small>
+				{% if photoset.owner == user%}
+					{% include "clickclick/_privacy_indicator.html" with photoset=photoset only %}
+				{% endif %}
+			</small>
+		</h1>
 		{% if photoset.owner == user %}
 			<section class="page-header-actions">
 				<a class="btn btn-primary" href="{% url 'clickclick.add_photo' photoset.slug %}"><i class="glyphicon glyphicon-plus"></i> Add Photo</a>
