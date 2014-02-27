@@ -23,7 +23,7 @@
 		<ul class="media-grid">
 			{% for photo in photoset.photos.all %}
 				<li>
-					<a class="thumbnail" href="{% url 'clickclick.photo' photoset.slug photo.slug %}"{% if photo.title %} title="{{ photo.title }}"{% endif %}>
+					<a class="thumbnail" href="{{ photo.get_absolute_url }}"{% if photo.title %} title="{{ photo.title }}"{% endif %}>
 						<img src="{% adjust photo.image "fit" height=260 %}" alt="{% if photo.title %}{{ photo.title }}{% else %}Untitled Photo{% endif %}"/>
 					</a>
 				</li>

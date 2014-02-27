@@ -95,7 +95,7 @@ class PhotoDeleteView(DeleteView, PhotoPermissionMixin):
 	
 	@property
 	def success_url(self):
-		return reverse('clickclick.views.photoset_detail', args=(self.kwargs['photoset_slug'],))
+		return reverse('clickclick.views.photoset_detail', args=(self.request.user.username, self.kwargs['photoset_slug'],))
 
 
 def upload_photos(request, photoset_slug):
