@@ -22,7 +22,7 @@ def photoset_detail(request, username, photoset_slug):
 def user_photoset_list(request, username):
 	user = get_object_or_404(User, username=username)
 	photosets = PhotoSet.objects.filter(owner=user)
-	return render(request, 'clickclick/photoset_list.html', {'user': user, 'photosets': photosets})
+	return render(request, 'clickclick/photoset_list.html', {'owner': user, 'photosets': photosets})
 
 
 class PhotoSetView(ListView):
