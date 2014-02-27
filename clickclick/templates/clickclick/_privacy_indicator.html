@@ -1,0 +1,7 @@
+{% if photoset.privacy == photoset.PUBLIC %}
+	<i data-toggle="tooltip" title="Public" class="tipped glyphicon glyphicon-globe"></i>
+{% elif photoset.privacy == photoset.UNLISTED %}
+	<i data-toggle="tooltip" title="Unlisted" class="tipped glyphicon glyphicon-eye-close"></i>
+{% elif photoset.privacy == photoset.PRIVATE %}
+	<i data-toggle="tooltip" title="Private" class="tipped glyphicon glyphicon-lock"></i>
+{% endif %}

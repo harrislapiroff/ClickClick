@@ -59,5 +59,10 @@
 			$this.parent('.input').addClass('focus')
 		});
 	})
+
+	// Set off tooltips
+	$(function(){
+		$('.tipped').tooltip();
+	})
 	
 }).call(this, jQuery)
