@@ -1,4 +1,4 @@
-from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import User
 from django.http import Http404
 from django.views.generic import DetailView, ListView
 from django.shortcuts import get_object_or_404, render
@@ -17,6 +17,12 @@ def photoset_detail(request, username, photoset_slug):
 		kwargs['photo_form'] = PhotoUploadForm(initial={'photoset': photoset.pk})
 	
 	return render(request, 'clickclick/photoset.html', kwargs)
+
+
+def user_photoset_list(request, username):
+	user = get_object_or_404(User, username=username)
+	photosets = PhotoSet.objects.filter(owner=user)
+	return render(request, 'clickclick/photoset_list.html', {'user': user, 'photosets': photosets})
 
 
 class PhotoSetView(ListView):
