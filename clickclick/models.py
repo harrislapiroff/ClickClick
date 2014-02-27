@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class PhotoSet(models.Model):
 	"""A photoset with photos in it."""
 	title = models.CharField(max_length=100)
-	slug = models.CharField(max_length=50, unique=True)
+	slug = models.CharField(max_length=50)
 	description = models.TextField(blank=True)
 	owner = models.ForeignKey(User, null=True, related_name='photosets')
 	creation_time = models.DateTimeField(auto_now_add=True)
@@ -17,6 +17,9 @@ class PhotoSet(models.Model):
 	
 	def __unicode__(self):
 		return self.title
+
+	class Meta:
+		unique_together = ('owner', 'slug',)
 
 
 class Photo(models.Model):
