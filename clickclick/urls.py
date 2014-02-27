@@ -12,9 +12,8 @@ urlpatterns = patterns('',
 	url(r'^photo_create/(?P<photoset_slug>[\w-]+)/$', 'clickclick.views.add_photo', name='clickclick.add_photo'),
 	url(r'^photo_delete/(?P<photoset_slug>[\w-]+)/(?P<photo_slug>[-\w]+)/$', 'clickclick.views.delete_photo', name='clickclick.delete_photo'),
 	url(r'^photo_edit/(?P<photoset_slug>[\w-]+)/(?P<photo_slug>[-\w]+)/$', 'clickclick.views.edit_photo', name='clickclick.edit_photo'),
-	# photo/set management
-	url(r'^photosets/$', 'clickclick.views.photoset_list', name='clickclick.photoset_list'),
 	# photo/set browsing
+	url(r'^(?P<username>[\w-]+)/$', 'clickclick.views.user_photoset_list', name='clickclick.user_photoset_list'),
 	url(r'^(?P<username>[\w-]+)/(?P<photoset_slug>[\w-]+)/$', 'clickclick.views.photoset_detail', name='clickclick.photoset'),
 	url(r'^(?P<username>[\w-]+)/(?P<photoset_slug>[\w-]+)/(?P<photo_slug>[-\w]+)/$', 'clickclick.views.photo_detail', name='clickclick.photo'),
 )
