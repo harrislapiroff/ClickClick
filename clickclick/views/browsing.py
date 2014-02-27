@@ -36,6 +36,11 @@ def photo_detail(request, username, photoset_slug, photo_slug):
 
 
 def user_photoset_list(request, username):
-	user = get_object_or_404(User, username=username)
-	photosets = PhotoSet.objects.filter(owner=user)
-	return render(request, 'clickclick/photoset_list.html', {'owner': user, 'photosets': photosets})
+	owner = get_object_or_404(User, username=username)
+	photosets = PhotoSet.objects.filter(owner=owner)
+
+	# If current user is not owner, restrict photosets to listed.
+	if owner != request.user:
+		photosets = photosets.filter(privacy=PhotoSet.PUBLIC)
+
+	return render(request, 'clickclick/photoset_list.html', {'owner': owner, 'photosets': photosets})
