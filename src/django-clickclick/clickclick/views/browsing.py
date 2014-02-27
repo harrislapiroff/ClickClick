@@ -1,16 +1,22 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.views.generic import DetailView, ListView
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext
 
+from clickclick.forms import PhotoUploadForm
 from clickclick.models import PhotoSet, Photo
 from clickclick.views.base import SinglePhotoMixin, SinglePhotoSetMixin
 
 
-class PhotoSetDetailView(DetailView, SinglePhotoSetMixin):
-	"A view for displaying a PhotoSet."
-	template_name = 'clickclick/photoset.html'
+def photoset_detail(request, photoset_slug):
+	photoset = get_object_or_404(PhotoSet, slug=photoset_slug)
+	kwargs = {'photoset': photoset}
+
+	if request.user == photoset.owner:
+		kwargs['photo_form'] = PhotoUploadForm(initial={'photoset': photoset.pk})
+	
+	return render(request, 'clickclick/photoset.html', kwargs)
 
 
 class PhotoSetView(ListView):
@@ -26,4 +32,3 @@ class PhotoDetailView(DetailView, SinglePhotoMixin):
 	template_name = 'clickclick/photo.html'
 
 photo_detail = PhotoDetailView.as_view()
-photoset_detail = PhotoSetDetailView.as_view()

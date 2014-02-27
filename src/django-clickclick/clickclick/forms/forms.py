@@ -3,9 +3,10 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
+from clickclick.forms.fields import MultiFileField
 from clickclick.models import PhotoSet, Photo
 
-__all__ = ('PhotoSetForm', 'PhotoCreateForm',)
+__all__ = ('PhotoSetForm', 'PhotoCreateForm', 'PhotoUploadForm',)
 
 class PhotoSetForm(forms.ModelForm):
 	slug = forms.CharField(max_length=50, label="URL", widget=forms.TextInput(attrs={'data-prepopulate-slug':'id_title'}))
@@ -32,7 +33,12 @@ class PhotoCreateForm(forms.ModelForm):
 		model = Photo
 		exclude = ('owner', 'photoset', 'index')
 
+
 class UserUpdateForm(UserChangeForm):
 	class Meta:
 		fields = ('first_name', 'last_name', 'username', 'email')
 		model = User
+
+
+class PhotoUploadForm(forms.Form):
+	images = MultiFileField()
