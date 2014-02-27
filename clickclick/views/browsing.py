@@ -9,8 +9,8 @@ from clickclick.models import PhotoSet, Photo
 from clickclick.views.base import SinglePhotoMixin, SinglePhotoSetMixin
 
 
-def photoset_detail(request, photoset_slug):
-	photoset = get_object_or_404(PhotoSet, slug=photoset_slug)
+def photoset_detail(request, username, photoset_slug):
+	photoset = get_object_or_404(PhotoSet, owner__username=username, slug=photoset_slug)
 	kwargs = {'photoset': photoset}
 
 	if request.user == photoset.owner:
