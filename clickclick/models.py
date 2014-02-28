@@ -54,3 +54,4 @@ class Photo(models.Model):
 	class Meta:
 		unique_together = ('photoset', 'slug',)
 		ordering = ('index', '-upload_time')
+		order_with_respect_to = 'photoset'

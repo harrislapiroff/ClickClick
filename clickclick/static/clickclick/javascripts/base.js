@@ -60,9 +60,21 @@
 		});
 	})
 
-	// Set off tooltips
 	$(function(){
+		// Set off tooltips
 		$('.tipped').tooltip();
+		// Affix Events
+		// This creates a clone of the element that preserves the spacing on the page and destroys it when
+		// the element is returned to position.
+		$('.page-header').on("affix.bs.affix", function () {
+			var $this = $(this),
+				clone = $this.clone().css({visibility: 'hidden'}).attr('aria-hidden', 'true');
+			$this.data('affix-clone', clone)
+			clone.insertAfter($this);
+		});
+		$('.page-header').on("affix-top.bs.affix", function () {
+			$(this).data('affix-clone').remove();
+		});
 	})
 	
 }).call(this, jQuery)

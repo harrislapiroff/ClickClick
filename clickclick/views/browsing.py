@@ -26,13 +26,25 @@ def photoset_detail(request, username, photoset_slug):
 
 def photo_detail(request, username, photoset_slug, photo_slug):
 	photoset = get_object_or_404(PhotoSet, owner__username=username, slug=photoset_slug)
-	photo = get_object_or_404(Photo, photoset=photoset, slug=photo_slug)
 
 	# If privacy settings do not allow this photoset to be publicly browsed, short-circuit.
 	if photoset.privacy == PhotoSet.PRIVATE and request.user != photoset.owner:
 		raise Http404("Photo not found.")
 
-	return render(request, 'clickclick/photo.html', {'photoset': photoset, 'photo': photo})
+	photo = get_object_or_404(Photo, photoset=photoset, slug=photo_slug)
+
+	# TODO: There's got to be a cleaner way to do this next bit.
+	try:
+		next = photo.get_next_in_order()
+	except:
+		next = None
+
+	try:
+		previous = photo.get_previous_in_order()
+	except:
+		previous = None
+
+	return render(request, 'clickclick/photo.html', {'photoset': photoset, 'photo': photo, 'next': next, 'previous': previous})
 
 
 def user_photoset_list(request, username):
