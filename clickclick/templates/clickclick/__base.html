@@ -1,17 +1,19 @@
 {% load clickclick_tags %}
+{% load static from staticfiles %}
+
 <!DOCTYPE html>
 
 <html>
 	<head>
 		<title>{% block title %}Click Click{% endblock %}</title>
 		{% block styles %}
-			<link rel="stylesheet" href="{{ STATIC_URL }}clickclick/bootstrap/css/bootstrap.css" type="text/css" media="screen" charset="utf-8">
-			<link rel="stylesheet" href="{{ STATIC_URL }}clickclick/screen.css" type="text/css" media="screen" charset="utf-8" />
+			<link rel="stylesheet" href="{% static "clickclick/lib/bootstrap/css/bootstrap.css" %}" type="text/css" media="screen" charset="utf-8">
+			<link rel="stylesheet" href="{% static "clickclick/stylesheets/screen.css" %}" type="text/css" media="screen" charset="utf-8" />
 		{% endblock %}
 		{% block javascript %}
-			<script src="{{ STATIC_URL }}clickclick/jquery.1.11.0.js" type="text/javascript" charset="utf-8"></script>
-			<script src="{{ STATIC_URL }}clickclick/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
-			<script src="{{ STATIC_URL }}clickclick/base.js" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static "clickclick/lib/jquery.1.11.0.js" %}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static "clickclick/lib/bootstrap/js/bootstrap.js" %}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static "clickclick/base.js" %}" type="text/javascript" charset="utf-8"></script>
 		{% endblock %}
 	</head>
 	<body>
