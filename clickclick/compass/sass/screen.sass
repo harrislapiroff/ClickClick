@@ -1,25 +1,42 @@
+$base-font-size: 15px
+$base-line-height: 1.33
+$computed-line-height: floor($base-font-size*$base-line-height)
+
+@function white($a)
+	@return rgba(255, 255, 255, $a)
+
+@function black($a)
+	@return rgba(0, 0, 0, $a)
+
 body
-  padding-top: 60px // make room for the navbar
-  padding-bottom: 20px
+	padding-bottom: 20px
+	background: #F5F5F5 image-url('noise.png')
+	font-size: $base-font-size
+	line-height: $base-line-height
+
+.cc-navbar
+	margin: 0
 
 .media-grid
-  margin: 0
-  padding: 0
-  white-space: collapse
+	margin: 0
+	padding: 0
+	white-space: collapse
 
 .media-grid > li
-  list-style-type: none
-  float: left
-  margin-right: 10px
+	list-style-type: none
+	float: left
+	margin-right: 10px
 
 .page-header
-  position: relative
-  margin: 10px 0
-
-.page-header > .page-title
-  margin: 0
-
-.page-header > .page-header-actions
-  position: absolute
-  top: 0
-  right: 0
+	margin: 0
+	background: white(.5)
+	border-bottom: 1px solid #E5E5E5
+	overflow: hidden
+	padding: $computed-line-height/2
+	margin-bottom: $computed-line-height/2
+	> .page-title
+		margin: 0
+		float: left
+		font-size: $base-font-size * 2
+	> .page-header-actions
+		float: right

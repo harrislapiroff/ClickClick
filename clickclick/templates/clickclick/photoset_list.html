@@ -1,4 +1,4 @@
-{% extends "clickclick/__base.html" %}
+{% extends "clickclick/__standard.html" %}
 {% load daguerre humanize %}
 
 {% block title %}
@@ -6,19 +6,27 @@
 		Your
 	{% else %}
 		{% firstof owner.first_name owner.username %}&#8217;s
-	{% endif %}
+	{% endif %} Photosets
 	| {{ block.super }}
 {% endblock %}
 
-{% block content %}
-	<header class="page-header">
-		<h1 class="page-title">{% if owner == user %}Your{% else %}{% firstof owner.first_name owner.username %}&#8217;s{% endif %} Photosets</h1>
-		{% if owner == user %}
-			<section class="page-header-actions">
-				<a href="{% url 'clickclick.create_photoset' %}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> New Photoset</a>
-			</section>
-		{% endif %}
-	</header>
+{% block page-title %}
+	{% if owner == user %}
+		Your
+	{% else %}
+		{% firstof owner.first_name owner.username %}&#8217;s
+	{% endif %} Photosets
+{% endblock %}
+
+{% block page-header-actions %}
+	{% if owner == user %}
+		<section class="page-header-actions">
+			<a href="{% url 'clickclick.create_photoset' %}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> New Photoset</a>
+		</section>
+	{% endif %}
+{% endblock %}
+
+{% block main %}
 	<section class="photoset-list">
 		<ul class="media-grid">
 		{% for photoset in photosets %}

@@ -1,0 +1,14 @@
+{% extends "clickclick/__base.html" %}
+
+{% block content %}
+	<header class="page-header">
+		{% block page-header%}
+			<h1 class="page-title">{% block page-title %}{% endblock %}</h1>
+			<div class="page-header-actions">{% block page-header-actions %}{% endblock %}</div>
+		{% endblock %}
+	</header>
+	<div class="container-fluid">
+		{% block main %}
+		{% endblock %}
+	</div>
+{% endblock %}
