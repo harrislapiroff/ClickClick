@@ -4,6 +4,7 @@
 $base-font-size: 15px
 $base-line-height: 1.33
 $computed-line-height: floor($base-font-size*$base-line-height)
+$header-height: 50px
 
 @function white($a)
 	@return rgba(255, 255, 255, $a)
@@ -16,6 +17,12 @@ body
 	background: #F5F5F5 image-url('noise.png')
 	font-size: $base-font-size
 	line-height: $base-line-height
+
+.margin-trailer
+	margin-bottom: $computed-line-height
+
+.margin-leader
+	margin-top: $computed-line-height
 
 .cc-navbar
 	margin: 0
@@ -49,3 +56,37 @@ body
 		font-size: $base-font-size * 2
 	> .page-header-actions
 		float: right
+
+// Photo Detail Page
+// -----------------
+
+.photo-stage
+	position: absolute
+	top: $header-height
+	left: 0
+	bottom: 0
+	right: 25%
+	background: #0C0C0C
+	// All of the following is a photo centering trick
+	text-align: center
+	font-size: 0 // collapses white-space b/w inline blocks
+	> *
+		font-size: $base-font-size // bump the font-size back up
+	&::after
+		content: " "
+		display: inline-block
+		height: 100%
+		vertical-align: middle
+	> img
+		max-width: 100%
+		max-height: 100%
+		display: inline-block
+		vertical-align: middle
+
+.photo-meta
+	position: absolute
+	top: $header-height
+	right: 0
+	left: 75%
+	bottom: 0
+	overflow: auto
