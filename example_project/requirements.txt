@@ -1,6 +1,6 @@
 https://www.djangoproject.com/download/1.7a2/tarball/ # Django 1.7a2
 Pillow==2.3.0
--e git+https://github.com/littleweaver/django-daguerre.git@ab0fc4da1ea2b37a3c128afdebfc30329710a1f0#egg=django_daguerre
+-e git+https://github.com/littleweaver/django-daguerre.git@2b05379fd10eca7489fdc672d683cc64a97fbada#egg=django_daguerre
 -e ..
 django-grappelli==2.5.2
 six==1.5.2
