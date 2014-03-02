@@ -1,3 +1,5 @@
+from autoslug import AutoSlugField
+
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -16,7 +18,7 @@ class PhotoSet(models.Model):
 	)
 
 	title = models.CharField(max_length=100)
-	slug = models.CharField(max_length=50)
+	slug = AutoSlugField(max_length=50, populate_from='title', unique_with='owner')
 	description = models.TextField(blank=True)
 	privacy = models.CharField(max_length=2, choices=PRIVACY_CHOICES, default=PRIVATE)
 	owner = models.ForeignKey(User, null=True, related_name='photosets')
@@ -36,7 +38,7 @@ class PhotoSet(models.Model):
 class Photo(models.Model):
 	"""A photo with metadata, which ideally belongs to a photoset. However, it is possible for a photo not to belong to a photoset, and therefore the owner property is necessary."""
 	title = models.CharField(max_length=128, blank=True)
-	slug = models.CharField(max_length=128)
+	slug = AutoSlugField(max_length=128, populate_from='title', unique_with='photoset')
 	owner = models.ForeignKey(User, null=True, related_name="photos")
 	image = models.ImageField(upload_to='photos')
 	caption = models.TextField(blank=True)

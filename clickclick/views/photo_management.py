@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseForbidden, HttpResponseNotAllowed
 from django.core.urlresolvers import reverse
-from django.utils.text import slugify
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
@@ -84,7 +83,7 @@ class PhotoSetDeleteView(DeleteView, PhotoSetPermissionMixin):
 	
 	@property
 	def success_url(self):
-		return reverse('clickclick.views.photoset_list')
+		return reverse('clickclick.views.user_photoset_list', kwargs={'username': self.request.user.username})
 
 
 class PhotoDeleteView(DeleteView, PhotoPermissionMixin):
@@ -111,7 +110,7 @@ def upload_photos(request, photoset_slug):
 		for _file in file_list:
 			# TODO: convert this for loop to a bulk create
 			# TODO: better slug generation--this leaves the potential for unresolved uniqueness conflicts, since photoset and slug must be unique
-			Photo.objects.create(title=_file.name, slug=slugify(_file.name), image=_file, owner=request.user, photoset=photoset)
+			Photo.objects.create(title=_file.name, image=_file, owner=request.user, photoset=photoset)
 		return redirect(photoset)
 	# Only POST is allowed.
 	return HttpResponseNotAllowed(("POST",))
