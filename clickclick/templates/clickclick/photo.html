@@ -5,40 +5,52 @@
 
 {% block content %}
 	{% with photo.photoset as photoset %}
-		<header class="page-header">
-			<h1 class="page-title">{% if photo.title %}{{ photo.title }}{% else %}&nbsp;{% endif %}</h1>
-			{% if photo.owner == user %}
-				<section class="page-header-actions">
-					<a class="btn" href="{% url 'clickclick.edit_photo' photoset.slug photo.slug %}"><i class="glyphicon glyphicon-pencil"></i> Edit Photo</a>
-					<a class="btn btn-danger" href="{% url 'clickclick.delete_photo' photoset.slug photo.slug %}"><i class="glyphicon glyphicon-trash"></i> Delete Photo</a>
-				</section>
-			{% endif %}
-		</header>
-		<div class="row">
-			<section class="col-md-8">
-				{% adjust photo.image "fit" width=880 height=770 as im %}
-				<div class="photo-stage">
-					<img src="{{ im }}" />
-				</div>
+		{% adjust photo.image "fit" width=880 height=770 as im %}
+		<div class="photo-stage">
+			<img src="{{ im }}" />
+		</div>{# /.photo-stage#}
+
+		<aside class="photo-meta">
+			<header class="page-header">
+				<h1 class="page-title">{% if photo.title %}{{ photo.title }}{% else %}&nbsp;{% endif %}</h1>
+			</header>
+			<div class="container-fluid">
+				<div class="photo-from-set text-muted margin-trailer">from <a href="{{ photoset.get_absolute_url }}">{{ photoset.title }}</a></div>
+
 				{% if photo.caption %}
 					<div class="photo-caption">
-						{{ photo.caption }}
+						{{ photo.caption|linebreaks }}
 					</div>
 				{% endif %}
-			</section>{# /.photo-stage.col-md-8 #}
-			<aside class="photo-meta col-md-4">
+
+				{% if photo.owner == user %}
+					<section class="page-header-actions">
+						<a class="btn btn-xs btn-default" href="{% url 'clickclick.edit_photo' photoset.slug photo.slug %}"><i class="glyphicon glyphicon-pencil"></i> Edit Photo</a>
+						<a class="btn btn-xs btn-danger" href="{% url 'clickclick.delete_photo' photoset.slug photo.slug %}"><i class="glyphicon glyphicon-trash"></i> Delete Photo</a>
+					</section>
+				{% endif %}
+
 				<ul class="pagination">
-					<li{% if not next %} class="disabled"{% endif %}>
-						<a href="{% firstof next.get_absolute_url "#" %}">&#171;</a>
-					</li>
-					<li>
-						<a href="{{ photoset.get_absolute_url }}">{{ photoset.title }}</a>
-					</li>
-					<li {% if not previous %} class="disabled"{% endif %}>
-						<a href="{% firstof previous.get_absolute_url "#" %}">&#187;</a>
-					</li>
+					{% if previous %}
+						<li>
+							<a href="{{ previous.get_absolute_url }}" data-keycut="LEFT">&#171;</a>
+						</li>
+					{% else %}
+						<li class="disabled">
+							<span>&#171;</span>
+						</li>
+					{% endif %}
+					{% if next %}
+						<li>
+							<a href="{{ next.get_absolute_url }}" data-keycut="RIGHT">&#187;</a>
+						</li>
+					{% else %}
+						<li class="disabled">
+							<span>&#171;</span>
+						</li>
+					{% endif %}
 				</ul>
-			</aside>{# /.photo-meta.col-md-4 #}
-		</div>{# /.row #}
+			</div>
+		</aside>{# /.photo-meta #}
 	{% endwith %}
 {% endblock %}
