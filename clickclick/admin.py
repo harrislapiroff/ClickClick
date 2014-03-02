@@ -4,8 +4,10 @@ from clickclick.models import Photo, PhotoSet
 
 class PhotoInline(admin.StackedInline):
 	model = Photo
-	sortable_field_name = "index"
 	extra = 0
+	readonly_fields = ('upload_time', 'last_updated_time', '_order')
+	fields = (('title', 'slug', 'owner'), ('image', 'caption',), ('upload_time', 'last_updated_time', '_order',),)
+	prepopulated_fields = {'slug': ('title',)}
 
 
 class PhotoSetAdmin(admin.ModelAdmin):

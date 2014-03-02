@@ -18,7 +18,7 @@ class PhotoSet(models.Model):
 	)
 
 	title = models.CharField(max_length=100)
-	slug = AutoSlugField(max_length=50, populate_from='title', unique_with='owner')
+	slug = AutoSlugField(max_length=50, populate_from='title', editable=True, unique_with='owner')
 	description = models.TextField(blank=True)
 	privacy = models.CharField(max_length=2, choices=PRIVACY_CHOICES, default=PRIVATE)
 	owner = models.ForeignKey(User, null=True, related_name='photosets')
@@ -38,14 +38,23 @@ class PhotoSet(models.Model):
 class Photo(models.Model):
 	"""A photo with metadata, which ideally belongs to a photoset. However, it is possible for a photo not to belong to a photoset, and therefore the owner property is necessary."""
 	title = models.CharField(max_length=128, blank=True)
-	slug = AutoSlugField(max_length=128, populate_from='title', unique_with='photoset')
+	photoset = models.ForeignKey(PhotoSet, related_name='photos')
+	slug = AutoSlugField(max_length=128, populate_from='title', editable=True, unique_with='photoset')
 	owner = models.ForeignKey(User, null=True, related_name="photos")
 	image = models.ImageField(upload_to='photos')
 	caption = models.TextField(blank=True)
-	photoset = models.ForeignKey(PhotoSet, related_name='photos')
-	index = models.PositiveIntegerField(default=0)
 	upload_time = models.DateTimeField(auto_now_add=True)
 	last_updated_time = models.DateTimeField(auto_now=True)
+
+	def save(self, *args, **kwargs):
+		"If the object is new, we're gonna override the save method to reorder the photoset so the new object comes first."
+		is_new = self.pk is None
+		previous_order = self.photoset.get_photo_order()
+		inst = super(Photo, self).save(*args, **kwargs)
+		if is_new:
+			new_order = [self.pk] + previous_order
+			self.photoset.set_photo_order(new_order)
+		return inst
 	
 	def get_absolute_url(self):
 		return reverse('clickclick.photo', args=[self.photoset.owner.username, self.photoset.slug, self.slug])
@@ -55,5 +64,5 @@ class Photo(models.Model):
 	
 	class Meta:
 		unique_together = ('photoset', 'slug',)
-		ordering = ('index', '-upload_time')
+		ordering = ('_order',)
 		order_with_respect_to = 'photoset'
