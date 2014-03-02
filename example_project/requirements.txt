@@ -3,5 +3,4 @@ Pillow==2.3.0
 -e git+https://github.com/littleweaver/django-daguerre.git@19355784982c80d026d91aadaf79ee44094e9895#egg=django_daguerre
 django-grappelli==2.5.2
 six==1.5.2
-master
 wsgiref==0.1.2
