@@ -26,35 +26,6 @@ class PhotoSetCreateView(CreateView):
 		return self.form_class
 
 
-class PhotoCreateView(CreateView):
-	"A view for creating photos within photosets. Method `dispatch` must be passed a photoset_slug kwarg."
-	
-	model = Photo
-	template_name = "clickclick/form.html"
-	form_class = PhotoCreateForm
-	
-	def dispatch(self, request, photoset_slug=None, *args, **kwargs):
-		# if no photoset is specified, return forbidden
-		if photoset_slug == None:
-			return HttpResponseForbidden('No photoset specified.')
-		# grab the photoset from database
-		self.photoset = get_object_or_404(PhotoSet, slug=photoset_slug)
-		# if they do not own the photoset, return forbidden
-		if self.photoset.owner != request.user:
-			return HttpResponseForbidden('Forbidden. You do not own that photoset.')
-		# otherwise, continue as usual
-		return super(PhotoCreateView, self).dispatch(request, *args, **kwargs)
-	
-	def get_form_kwargs(self):
-		kwargs = super(PhotoCreateView, self).get_form_kwargs()
-		instance = self.model(owner=self.request.user, photoset=self.photoset)
-		kwargs.update(instance=instance)
-		return kwargs
-	
-	def get_form_class(self):
-		return self.form_class
-
-
 class PhotoSetListView(ListView):
 	"A view for listing all the photosets owned by the current user."
 	model = PhotoSet
@@ -118,7 +89,6 @@ def upload_photos(request, photoset_slug):
 create_photoset = login_required(PhotoSetCreateView.as_view())
 edit_photoset = login_required(PhotoSetUpdateView.as_view())
 delete_photoset = login_required(PhotoSetDeleteView.as_view())
-add_photo = login_required(PhotoCreateView.as_view())
 edit_photo = login_required(PhotoUpdateView.as_view())
 delete_photo = login_required(PhotoDeleteView.as_view())
 photoset_list = login_required(PhotoSetListView.as_view())

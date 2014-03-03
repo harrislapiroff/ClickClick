@@ -15,7 +15,6 @@
 {% block page-header-actions %}
 	{% if photoset.owner == user %}
 		<section class="page-header-actions">
-			<a class="btn btn-primary" href="{% url 'clickclick.add_photo' photoset.slug %}"><i class="glyphicon glyphicon-plus"></i> Add Photo</a>
 			<a class="btn btn-default" href="{% url 'clickclick.edit_photoset' photoset.slug %}"><i class="glyphicon glyphicon-cog"></i> Photoset Settings</a>
 			<a class="btn btn-danger" href="{% url 'clickclick.delete_photoset' photoset.slug %}" class="delete"><i class="glyphicon glyphicon-trash"></i> Delete Photoset</a>
 		</section>
