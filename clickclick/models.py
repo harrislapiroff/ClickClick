@@ -3,6 +3,9 @@ from autoslug import AutoSlugField
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericRelation
+
+from django_comments.models import Comment
 
 
 class PhotoSet(models.Model):
@@ -55,6 +58,7 @@ class Photo(models.Model):
 	caption = models.TextField(blank=True)
 	upload_time = models.DateTimeField(auto_now_add=True)
 	last_updated_time = models.DateTimeField(auto_now=True)
+	comments = GenericRelation(Comment, content_type_field='content_type', object_id_field='object_pk')
 
 	def save(self, *args, **kwargs):
 		"If the object is new, we're gonna override the save method to reorder the photoset so the new object comes first."
