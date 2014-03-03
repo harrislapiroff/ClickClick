@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from clickclick.utils import reverse_lazy
+from clickclick.moderators import PhotoModerator # Need to ensure comment moderators get loaded.
 
 urlpatterns = patterns('',
 	url(r'^$', 'clickclick.views.home', name="clickclick.home"),

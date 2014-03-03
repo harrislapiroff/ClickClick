@@ -63,12 +63,14 @@
 						</li>
 					{% endif %}
 				</ul>
-				<div class="comments">
-				{% with next=photo.get_absolute_url %}
-					{% render_comment_form for photo %}
-				{% endwith %}
-				{% render_comment_list for photo %}
-				</div>
+				{% if photo.photoset.comments_enabled != "NO" %}
+					<div class="comments">
+						{% with next=photo.get_absolute_url %}
+							{% render_comment_form for photo %}
+						{% endwith %}
+						{% render_comment_list for photo %}
+					</div>
+				{% endif %}
 			</div>
 		</aside>{# /.photo-meta #}
 	{% endwith %}

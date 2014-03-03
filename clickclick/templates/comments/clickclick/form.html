@@ -25,5 +25,8 @@
 	<div class="form-group">
 		<textarea id="{{ form.comment.id_for_label }}" name="{{ form.comment.name }}" class="form-control" placeholder="Your comment here." required></textarea>
 	</div>
+	{% if photo.photoset.comments_enabled == "MD" %}
+		<div class="text-muted margin-trailer"><small>Comments will be approved before being published.</small></div>
+	{% endif %}
 	<button class="btn btn-primary btn-block">Add a Comment</button>
 </form>

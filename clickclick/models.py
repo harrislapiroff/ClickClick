@@ -17,10 +17,20 @@ class PhotoSet(models.Model):
 		(PUBLIC, "Public"),
 	)
 
+	COMMENTS_ON = "ON"
+	COMMENTS_MODERATED = "MD"
+	COMMENTS_OFF = "NO"
+	COMMENT_CHOICES = (
+		(COMMENTS_ON, "Enabled"),
+		(COMMENTS_MODERATED, "Moderated"),
+		(COMMENTS_OFF, "Disabled")
+	)
+
 	title = models.CharField(max_length=100)
 	slug = AutoSlugField(max_length=50, populate_from='title', editable=True, unique_with='owner')
 	description = models.TextField(blank=True)
 	privacy = models.CharField(max_length=2, choices=PRIVACY_CHOICES, default=PRIVATE)
+	comments_enabled = models.CharField("Commenting", max_length=2, choices=COMMENT_CHOICES, default=COMMENTS_OFF)
 	owner = models.ForeignKey(User, null=True, related_name='photosets')
 	creation_time = models.DateTimeField(auto_now_add=True)
 	last_updated_time = models.DateTimeField(auto_now=True)
