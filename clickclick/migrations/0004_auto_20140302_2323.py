@@ -10,10 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='photo',
-            name='index',
-        ),
         migrations.AlterField(
             model_name='photo',
             name='slug',

@@ -35,7 +35,6 @@ class Migration(migrations.Migration):
                 ('image', models.ImageField(upload_to='photos')),
                 ('caption', models.TextField(blank=True)),
                 ('photoset', models.ForeignKey(to='clickclick.PhotoSet', to_field=u'id')),
-                ('index', models.PositiveIntegerField(default=0)),
                 ('upload_time', models.DateTimeField(auto_now_add=True)),
                 ('last_updated_time', models.DateTimeField(auto_now=True)),
             ],
