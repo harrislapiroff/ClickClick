@@ -6,11 +6,13 @@ register = template.Library()
 
 
 @register.simple_tag
-def gravatar_url(email, size=40, default=None):
-	get_vars = {'s':str(size)}
-	if default:
-		get_vars.update({'d':default})
+def gravatar_url(email, size=40, default="blank", rating="g"):
+	parameters = {
+		's': str(size),
+		'd': default,
+		'r': rating,
+	}
 
 	gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() + "?"
-	gravatar_url += urllib.urlencode(get_vars)
+	gravatar_url += urllib.urlencode(parameters)
 	return gravatar_url
