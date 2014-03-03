@@ -1,0 +1,44 @@
+{% load gravatar humanize %}
+
+{% if comment_list|length != 0 %}
+	<div class="comment-list white-card">
+		{% for comment in comment_list %}
+			{% if not comment.is_removed %}{# never display removed comments#}
+				{% if comment.is_public or photo.photoset.owner == user %}
+					<div class="media comment white-card-section{% if not comment.is_public %} needs-moderation{% endif %}">
+						<span class="pull-left avatar">
+							<img src="{% gravatar_url comment.email 80 "identicon" "pg" %}" width="40" height="40" />
+						</span>
+						<div class="media-body comment-body">
+							<div class="media-heading comment-heading">
+									<div class="comment-actions pull-right">
+										{% if photo.photoset.owner == user %}
+											<a href="{% url "clickclick.remove_comment" comment.pk %}" class="tipped text-muted" data-toggle="tooltip" title="Remove Comment">
+												<i class="glyphicon glyphicon-remove"></i>
+											</a>
+										{% endif %}
+									</div>
+								<strong>{{ comment.name }}</strong>
+								<span class="text-muted">{{ comment.submit_date|naturaltime }}</span>
+							</div>
+							<div class="comment-text">{{ comment.comment|linebreaks }}</div>
+						</div>
+						{% if not comment.is_public %}
+							<div class="alert alert-info">
+								<p>Comment needs moderation.</p>
+								<p>
+									<a href="{% url "clickclick.approve_comment" comment.pk %}" class="btn btn-success btn-sm">
+										<i class="glyphicon glyphicon-ok"></i> Approve
+									</a>
+									<a href="{% url "clickclick.remove_comment" comment.pk %}" class="btn btn-danger btn-sm">
+										<i class="glyphicon glyphicon-remove"></i> Remove
+									</a>
+								</p>
+							</div>
+						{% endif %}
+					</div>
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endif %}

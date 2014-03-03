@@ -3,6 +3,9 @@ from autoslug import AutoSlugField
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericRelation
+
+from django_comments.models import Comment
 
 
 class PhotoSet(models.Model):
@@ -17,10 +20,20 @@ class PhotoSet(models.Model):
 		(PUBLIC, "Public"),
 	)
 
+	COMMENTS_ON = "ON"
+	COMMENTS_MODERATED = "MD"
+	COMMENTS_OFF = "NO"
+	COMMENT_CHOICES = (
+		(COMMENTS_ON, "Enabled"),
+		(COMMENTS_MODERATED, "Moderated"),
+		(COMMENTS_OFF, "Disabled")
+	)
+
 	title = models.CharField(max_length=100)
 	slug = AutoSlugField(max_length=50, populate_from='title', editable=True, unique_with='owner')
 	description = models.TextField(blank=True)
 	privacy = models.CharField(max_length=2, choices=PRIVACY_CHOICES, default=PRIVATE)
+	comments_enabled = models.CharField("Commenting", max_length=2, choices=COMMENT_CHOICES, default=COMMENTS_OFF)
 	owner = models.ForeignKey(User, null=True, related_name='photosets')
 	creation_time = models.DateTimeField(auto_now_add=True)
 	last_updated_time = models.DateTimeField(auto_now=True)
@@ -45,6 +58,7 @@ class Photo(models.Model):
 	caption = models.TextField(blank=True)
 	upload_time = models.DateTimeField(auto_now_add=True)
 	last_updated_time = models.DateTimeField(auto_now=True)
+	comments = GenericRelation(Comment, content_type_field='content_type', object_id_field='object_pk')
 
 	def save(self, *args, **kwargs):
 		"If the object is new, we're gonna override the save method to reorder the photoset so the new object comes first."

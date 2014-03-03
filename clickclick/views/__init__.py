@@ -1,5 +1,6 @@
 from clickclick.views.browsing import *
 from clickclick.views.photo_management import *
+from clickclick.views.comments import *
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
 
