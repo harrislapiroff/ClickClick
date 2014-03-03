@@ -1,0 +1,15 @@
+{% load gravatar %}
+
+<div class="comment-list white-card">
+	{% for comment in comment_list %}
+		<div class="media comment white-card-section">
+			<span class="pull-left avatar">
+				<img src="http://www.gravatar.com/avatar/a4ffcc8ad8329d921524db3a3af5a416?s=80" width="40" height="40" />
+			</span>
+			<div class="media-body comment-body">
+				<h4 class="media-heading comment-heading">{{ comment.name }}</h4>
+				<div class="comment-text">{{ comment.comment|linebreaks }}</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>

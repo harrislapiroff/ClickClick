@@ -1,3 +1,4 @@
+@import compass/css3/border-radius
 @import compass/css3/box-shadow
 @import compass/css3/transition
 @import compass/css3/images
@@ -64,6 +65,19 @@ body
 		font-size: $base-font-size * 2
 	> .close
 		font-size: $base-font-size * 2
+
+.white-card
+	+border-radius(3px)
+	background: #FFF
+	+box-shadow(0 2px 4px 0 black(.05))
+	border: 1px solid #CCC
+	padding: 0 #{$computed-line-height / 2}
+	> .white-card-section
+		margin: 0 #{-$computed-line-height / 2}
+		padding: $computed-line-height/2
+		border-top: 1px solid #EEE
+		&:first-child
+			border-top: 0
 
 // Photo Detail Page
 // -----------------

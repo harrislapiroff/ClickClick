@@ -1,5 +1,5 @@
 {% extends "clickclick/__base.html" %}
-{% load daguerre %}
+{% load daguerre comments %}
 
 {% block title %}{{ photo.title }} | {{ block.super }}{% endblock %}
 
@@ -63,6 +63,10 @@
 						</li>
 					{% endif %}
 				</ul>
+				<div class="comments">
+				{% render_comment_form for photo %}
+				{% render_comment_list for photo %}
+				</div>
 			</div>
 		</aside>{# /.photo-meta #}
 	{% endwith %}
