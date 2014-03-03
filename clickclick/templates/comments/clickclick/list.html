@@ -1,4 +1,4 @@
-{% load gravatar %}
+{% load gravatar humanize %}
 
 {% if comment_list|length != 0 %}
 	<div class="comment-list white-card">
@@ -8,7 +8,10 @@
 					<img src="{% gravatar_url comment.email 80 "identicon" "pg" %}" width="40" height="40" />
 				</span>
 				<div class="media-body comment-body">
-					<h4 class="media-heading comment-heading">{{ comment.name }}</h4>
+					<div class="media-heading comment-heading">
+						<strong>{{ comment.name }}</strong>
+						<span class="text-muted">{{ comment.submit_date|naturaltime }}</span>
+					</div>
 					<div class="comment-text">{{ comment.comment|linebreaks }}</div>
 				</div>
 			</div>
