@@ -33,7 +33,8 @@
 			{% for photo in photoset.photos.all %}
 				<li>
 					<a class="thumbnail" href="{{ photo.get_absolute_url }}"{% if photo.title %} title="{{ photo.title }}"{% endif %}>
-						<img src="{% adjust photo.image "fit" height=260 %}" alt="{% if photo.title %}{{ photo.title }}{% else %}Untitled Photo{% endif %}"/>
+						{% adjust photo.image "fit" height=260 as image %}
+						<img src="{{ image }}" height="{{ image.height }}" width="{{ image.width }}" alt="{% if photo.title %}{{ photo.title }}{% else %}Untitled Photo{% endif %}"/>
 					</a>
 				</li>
 			{% empty %}
