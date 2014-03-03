@@ -66,3 +66,24 @@ class Photo(models.Model):
 		unique_together = ('photoset', 'slug',)
 		ordering = ('_order',)
 		order_with_respect_to = 'photoset'
+
+
+class Comment(models.Model):
+	"Comments on photos."
+	user = models.ForeignKey(User, null=True)
+	photo = models.ForeignKey(Photo, related_name='comments')
+	name = models.CharField(max_length=128, blank=True, null=True)
+	email = models.EmailField(max_length=255, blank=True, null=True)
+	content = models.TextField()
+	submit_date = models.DateTimeField(auto_now_add=True)
+	last_modified = models.DateTimeField(auto_now=True)
+	ip_address = models.GenericIPAddressField()
+	is_public = models.BooleanField(default=True)
+	is_removed = models.BooleanField(default=False)
+
+	def __unicode__(self):
+		return u"Comment on %s by %s" % (photo, user.username if user else name)
+
+	class Meta:
+		ordering = ('-submit_date',)
+
