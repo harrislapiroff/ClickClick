@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from clickclick.forms.fields import MultiFileField
 from clickclick.models import PhotoSet, Photo
 
-__all__ = ('PhotoSetForm', 'PhotoCreateForm', 'PhotoUploadForm',)
+__all__ = ('PhotoSetForm', 'PhotoUpdateForm', 'PhotoUploadForm',)
 
 class PhotoSetForm(forms.ModelForm):
 	slug = forms.CharField(max_length=50, label="URL", widget=forms.TextInput(attrs={'data-prepopulate-slug':'id_title'}))
@@ -21,17 +21,17 @@ class PhotoSetForm(forms.ModelForm):
 		exclude = ('owner',)
 
 
-class PhotoCreateForm(forms.ModelForm):
+class PhotoUpdateForm(forms.ModelForm):
 	slug = forms.CharField(max_length=50, label="URL", widget=forms.TextInput(attrs={'data-prepopulate-slug':'id_title'}))
 	
 	def __init__(self, *args, **kwargs):
-		super(PhotoCreateForm, self).__init__(*args, **kwargs)
+		super(PhotoUpdateForm, self).__init__(*args, **kwargs)
 		url = "http://%s%s" % ("localhost", reverse('clickclick.photo', args=(self.instance.photoset.owner.username, self.instance.photoset.slug, '--INPUT_HERE--',)))
 		self.fields['slug'].widget.attrs.update({'data-slug-url': url})
 		
 	class Meta:
 		model = Photo
-		exclude = ('owner', 'photoset', 'index')
+		exclude = ('owner', 'photoset', 'image')
 
 
 class UserUpdateForm(UserChangeForm):

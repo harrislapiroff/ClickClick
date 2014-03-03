@@ -6,7 +6,7 @@ from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
 
 from clickclick.models import PhotoSet, Photo
-from clickclick.forms import PhotoSetForm, PhotoCreateForm
+from clickclick.forms import PhotoSetForm, PhotoUpdateForm
 from clickclick.views.base import SinglePhotoMixin, SinglePhotoSetMixin, PhotoPermissionMixin, PhotoSetPermissionMixin
 
 
@@ -40,7 +40,7 @@ class PhotoSetListView(ListView):
 class PhotoUpdateView(UpdateView, PhotoPermissionMixin):
 	"A view for editing photos."
 	template_name = "clickclick/form.html"
-	form_class = PhotoCreateForm
+	form_class = PhotoUpdateForm
 
 
 class PhotoSetUpdateView(UpdateView, PhotoSetPermissionMixin):
