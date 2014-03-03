@@ -5,7 +5,7 @@
 	{% if owner == user %}
 		Your
 	{% else %}
-		{% firstof owner.first_name owner.username %}&#8217;s
+		{% include "clickclick/_casual_name.html" with user=owner only %}&#8217;s
 	{% endif %} Photosets
 	| {{ block.super }}
 {% endblock %}
@@ -14,7 +14,7 @@
 	{% if owner == user %}
 		Your
 	{% else %}
-		{% firstof owner.first_name owner.username %}&#8217;s
+		{% include "clickclick/_casual_name.html" with user=owner only %}&#8217;s
 	{% endif %} Photosets
 {% endblock %}
 
