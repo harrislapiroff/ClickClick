@@ -12,7 +12,10 @@
 
 		<aside class="photo-meta">
 			<header class="page-header">
-				<h1 class="page-title">{% if photo.title %}{{ photo.title }}{% else %}&nbsp;{% endif %}</h1>
+				<a href="{{ photoset.get_absolute_url }}" class="close">&times;</a>{# close box #}
+				<h1 class="page-title">
+					{% if photo.title %}{{ photo.title }}{% else %}&nbsp;{% endif %}
+				</h1>
 			</header>
 			<div class="container-fluid">
 				<div class="photo-from-set margin-trailer">
