@@ -15,7 +15,17 @@
 				<h1 class="page-title">{% if photo.title %}{{ photo.title }}{% else %}&nbsp;{% endif %}</h1>
 			</header>
 			<div class="container-fluid">
-				<div class="photo-from-set text-muted margin-trailer">from <a href="{{ photoset.get_absolute_url }}">{{ photoset.title }}</a></div>
+				<div class="photo-from-set margin-trailer">
+					from
+					<span class="text-muted">
+						{% if photoset.owner == user %}{% include "clickclick/_privacy_indicator.html" %}{% endif %}
+					</span>
+					<a href="{{ photoset.get_absolute_url }}">{{ photoset.title }}</a>
+					by 
+					<a href="{% url "clickclick.user_photoset_list" photoset.owner.username %}">
+						{% include "clickclick/_casual_name.html" with user=photoset.owner only%}
+					</a>
+				</div>
 
 				{% if photo.caption %}
 					<div class="photo-caption">
