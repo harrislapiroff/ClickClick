@@ -39,13 +39,13 @@
 								</a>
 							</li>
 							<li>
-								<a href="{% url 'admin:logout' %}?next=/">
+								<a href="{% url 'clickclick.logout' %}?next=/">
 									<i class="glyphicon glyphicon-off"></i> Log Out
 								</a>
 							</li>
 						{% else %}
 							<li>
-								<a href="{% url 'admin:login' %}?next=/">Sign In</a>
+								<a href="{% url 'clickclick.login' %}?next=/">Sign In</a>
 							</li>
 						{% endif %}
 					</ul>{# /.nav #}

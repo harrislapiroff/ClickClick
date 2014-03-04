@@ -1,3 +1,4 @@
+from clickclick.views.auth import *
 from clickclick.views.browsing import *
 from clickclick.views.photo_management import *
 from clickclick.views.comments import *
