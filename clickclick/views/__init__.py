@@ -10,4 +10,4 @@ def home(request):
 		user_photoset_list = reverse('clickclick.user_photoset_list', args=[request.user.username])
 		return redirect(user_photoset_list)
 	else:
-		return render(request, 'clickclick/home.html', {})
+		return redirect(login)
