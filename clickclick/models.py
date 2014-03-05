@@ -1,3 +1,5 @@
+import datetime
+
 from autoslug import AutoSlugField
 
 from django.db import models
@@ -46,6 +48,7 @@ class PhotoSet(models.Model):
 
 	class Meta:
 		unique_together = ('owner', 'slug',)
+		ordering = ('-last_updated_time',)
 
 
 class Photo(models.Model):
@@ -61,13 +64,25 @@ class Photo(models.Model):
 	comments = GenericRelation(Comment, content_type_field='content_type', object_id_field='object_pk')
 
 	def save(self, *args, **kwargs):
-		"If the object is new, we're gonna override the save method to reorder the photoset so the new object comes first."
+		"""
+		If the object is new, we're gonna override the save method to reorder
+		the photoset so the new object comes first.
+
+		This method also updates the last_updated_time on the parent photoset.
+
+		"""
+
 		is_new = self.pk is None
 		previous_order = self.photoset.get_photo_order()
 		inst = super(Photo, self).save(*args, **kwargs)
 		if is_new:
 			new_order = [self.pk] + previous_order
 			self.photoset.set_photo_order(new_order)
+
+		# Update photoset
+		self.photoset.last_updated_time = datetime.datetime.now()
+		self.photoset.save()
+
 		return inst
 	
 	def get_absolute_url(self):
