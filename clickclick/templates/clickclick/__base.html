@@ -34,18 +34,34 @@
 						{% if user.is_authenticated %}
 							<li>
 								<a href="{% url 'clickclick.user_photoset_list' user.username %}">
-									<i class="glyphicon glyphicon-user"></i>
 									{% include "clickclick/_casual_name.html" with user=user only %}
 								</a>
 							</li>
-							<li>
-								<a href="{% url 'admin:logout' %}?next=/">
-									<i class="glyphicon glyphicon-off"></i> Log Out
+							<li class="dropdown">
+								<a class="dropdown-toggle" data-toggle="dropdown" href="">
+									<i class="glyphicon glyphicon-cog"></i>
 								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="{% url 'clickclick.user_update' %}?next=/">
+											<i class="glyphicon glyphicon-user"></i> Profile
+										</a>
+									</li>
+									<li>
+										<a href="{% url 'clickclick.password_change' %}?next=/">
+											<i class="glyphicon glyphicon-lock"></i> Change Password
+										</a>
+									</li>
+									<li>
+										<a href="{% url 'clickclick.logout' %}?next=/">
+											<i class="glyphicon glyphicon-off"></i> Sign Out
+										</a>
+									</li>
+								</ul>
 							</li>
 						{% else %}
 							<li>
-								<a href="{% url 'admin:login' %}?next=/">Sign In</a>
+								<a href="{% url 'clickclick.login' %}?next=/">Sign In</a>
 							</li>
 						{% endif %}
 					</ul>{# /.nav #}

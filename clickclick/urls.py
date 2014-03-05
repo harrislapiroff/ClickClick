@@ -6,6 +6,12 @@ from clickclick.moderators import PhotoModerator # Need to ensure comment modera
 urlpatterns = patterns('',
 	url(r'^$', 'clickclick.views.home', name="clickclick.home"),
 
+	# auth
+	url(r'login/', 'clickclick.views.login', name='clickclick.login'),
+	url(r'logout/', 'django.contrib.auth.views.logout', name='clickclick.logout'), # no need to reinvent the wheel for a templateless view
+	url(r'profile/change/', 'clickclick.views.user_update', name='clickclick.user_update'),
+	url(r'password/change/', 'clickclick.views.password_change', name='clickclick.password_change'),
+
 	# photo/set creation and updating
 	url(r'^create/$', 'clickclick.views.create_photoset', name='clickclick.create_photoset'),
 	url(r'^delete/(?P<photoset_slug>[\w-]+)/$', 'clickclick.views.delete_photoset', name='clickclick.delete_photoset'),
