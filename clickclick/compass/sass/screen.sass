@@ -2,6 +2,8 @@
 @import compass/css3/box-shadow
 @import compass/css3/transition
 @import compass/css3/images
+$use-mozilla-ellipsis-binding: true
+@import compass/typography/text/ellipsis
 
 $base-font-size: 15px
 $base-line-height: 1.33
@@ -49,6 +51,23 @@ body
 	list-style-type: none
 	float: left
 	margin-right: 10px
+	.caption
+		padding: $computed-line-height / 2
+		height: $computed-line-height * 3
+		> .media-grid-title
+			margin: 0
+			font-size: $base-font-size
+			line-height: $base-line-height
+			max-height: $computed-line-height
+			overflow: hidden
+			+ellipsis
+		> .media-grid-detail
+			margin: 0
+			font-size: 12px
+			line-height: $computed-line-height
+			max-height: $computed-line-height
+			+ellipsis
+
 
 .page-header
 	margin: 0

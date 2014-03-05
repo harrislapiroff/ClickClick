@@ -32,19 +32,19 @@
 		{% for photoset in photosets %}
 			{% adjust photoset.photos.all.0.image "fit" height=260 as im %}
 			<li>
-				<a style="width: {{ im.width }}px; box-sizing: content-box;" href="{{ photoset.get_absolute_url }}" class="thumbnail">
+				<a style="width: {{ im.width }}px; box-sizing: content-box;" href="{{ photoset.get_absolute_url }}" class="thumbnail" title="{{ photoset.title }}">
 					<img src="{{ im.url }}" />
 					<div class="caption">
-						<h5>
-							{{ photoset.title }}<br />
-							<small>
-								{{ photoset.last_updated_time|naturaltime }}
-								{% if owner == user%}
-									&bull;
-									{% include "clickclick/_privacy_indicator.html" with photoset=photoset only %}
-								{% endif %}
-							</small>
+						<h5 class="media-grid-title">
+							{{ photoset.title }}
 						</h5>
+						<p class="text-muted media-grid-detail">
+							{{ photoset.last_updated_time|naturaltime }}
+							{% if owner == user%}
+								&bull;
+								{% include "clickclick/_privacy_indicator.html" with photoset=photoset only %}
+							{% endif %}
+						</p>
 					</div>
 				</a>
 			</li>
