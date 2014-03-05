@@ -1,5 +1,13 @@
 {% extends "clickclick/__form.html" %}
 
+{% block title %}Sign In | {{ block.super }}{% endblock %}
+
+{% block page-title %}Sign In{% endblock %}
+
 {% block extra_fields %}
 	<input type="hidden" name="next" value="/" />
+{% endblock %}
+
+{% block actions %}
+	<button class="btn btn-primary">Sign In</button>
 {% endblock %}
