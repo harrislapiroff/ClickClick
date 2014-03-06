@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 
 from clickclick.forms.fields import MultiFileField
@@ -13,7 +14,8 @@ class PhotoSetForm(forms.ModelForm):
 	
 	def __init__(self, *args, **kwargs):
 		super(PhotoSetForm, self).__init__(*args, **kwargs)
-		url = "http://%s%s" % ("localhost", reverse('clickclick.photoset', args=(self.instance.owner.username, '--INPUT_HERE--',)))
+		domain = Site.objects.get_current()
+		url = "http://%s%s" % (domain, reverse('clickclick.photoset', args=(self.instance.owner.username, '--INPUT_HERE--',)))
 		self.fields['slug'].widget.attrs.update({'data-slug-url': url})
 	
 	class Meta:
@@ -26,7 +28,8 @@ class PhotoUpdateForm(forms.ModelForm):
 	
 	def __init__(self, *args, **kwargs):
 		super(PhotoUpdateForm, self).__init__(*args, **kwargs)
-		url = "http://%s%s" % ("localhost", reverse('clickclick.photo', args=(self.instance.photoset.owner.username, self.instance.photoset.slug, '--INPUT_HERE--',)))
+		domain = Site.objects.get_current()
+		url = "http://%s%s" % (domain, reverse('clickclick.photo', args=(self.instance.photoset.owner.username, self.instance.photoset.slug, '--INPUT_HERE--',)))
 		self.fields['slug'].widget.attrs.update({'data-slug-url': url})
 		
 	class Meta:
