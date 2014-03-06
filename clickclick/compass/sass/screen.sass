@@ -142,3 +142,17 @@ body
 .needs-moderation
 	background: #E5E5E5
 	color: #777
+
+// Singletons
+// ----------
+
+#messages
+	position: absolute
+	top: $header-height
+	right: 33%
+	left: 33%
+	padding: $computed-line-height / 2
+	z-index: 9999
+	width: 33%
+	> .alert:last-child
+		margin-bottom: 0
