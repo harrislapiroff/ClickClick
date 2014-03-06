@@ -13,6 +13,6 @@ def gravatar_url(email, size=40, default="blank", rating="g"):
 		'r': rating,
 	}
 
-	gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() + "?"
+	gravatar_url = "//www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() + "?"
 	gravatar_url += urllib.urlencode(parameters)
 	return gravatar_url
